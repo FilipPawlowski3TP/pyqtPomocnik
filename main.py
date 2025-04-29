@@ -66,12 +66,33 @@ class MyPizza(QDialog):
     def uzupelnij(self):
         self.ui.lineSredniaA.setText(f'{self.srednia_arytmetyczna():.2f}')
         self.ui.lineSredniaG.setText(f'{self.srednia_geomatryczna():.2f}')
+        self.ui.lineMediana.setText((f'{self.mediana():.2f}'))
+        self.ui.lineDominanta.setText(str(self.dominanta()))
 
     def mediana(self):
         dl = len(self.liczby)
         liczby_posortowane = sorted(self.liczby)
-        if dlugosc % 2 == 1:
-            return liczby_posortowane
+        if dl % 2 == 1:
+            return liczby_posortowane[dl // 2]
+        else:
+            return (liczby_posortowane[dl//2-1]+liczby_posortowane[dl//2]) / 2
+
+    def dominanta(self):
+        wystapienia = {}
+        for liczba in self.liczby:
+            if liczba not in wystapienia.keys():
+                wystapienia[liczba] = 1
+            else:
+                wystapienia[liczba] += 1
+        max = 0
+        max_arg = 0
+
+        for k, v in wystapienia.items():
+            if v > max:
+                max = v
+                max_arg = k
+
+        return max_arg
 
 if __name__ == '__main__':
     app = QApplication(sys.argv)
